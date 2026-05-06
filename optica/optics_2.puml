@@ -1,0 +1,87 @@
+@startuml
+hide circle
+entity "suppliers" {
+* supplier_id : INT
+--
+name : VARCHAR
+phone : VARCHAR
+fax : VARCHAR
+nif : CHAR
+}
+entity "brands" {
+* brand_id : INT
+--
+name : VARCHAR
++ supplier_id : INT
+}
+entity "glasses" {
+* glass_id : INT
+--
+model : VARCHAR
+prescription_left : DECIMAL
+prescription_right : DECIMAL
+frame_type : ENUM
+frame_color : VARCHAR
+left_lens_color : VARCHAR
+right_lens_color : VARCHAR
+cost_unit_price : DECIMAL
+stock : TINYINT
++ brand_id : INT
+}
+entity "addresses" {
+* address_id : INT
+--
+street : VARCHAR
+address_number : VARCHAR
+address_floor : VARCHAR
+door : VARCHAR
+city : VARCHAR
+postal_code : VARCHAR
+country : CHAR
++ supplier_id : INT
+}
+entity "customers" {
+* customer_id : INT
+--
+recomended_by_id : INT
+is_active : BOOLEAN
+name : VARCHAR
+postal_code : VARCHAR
+phone : VARCHAR
+email : VARCHAR
+registered_at : DATE
++ recommended_by_id : INT
+}
+entity "employees" {
+* employee_id : INT
+--
+first_name : VARCHAR
+last_name : VARCHAR
+}
+entity "orders" {
+* order_id : INT
+--
+employee_id : INT
+customer_id : INT
+ordered_at : DATETIME
++ employee_id : INT
++ customer_id : INT
+}
+entity "details" {
+order_id : INT
+glass_id : INT
+--
+quantity : INT
+sale_unit_price : DECIMAL
++ order_id : INT
++ glass_id : INT
+}
+suppliers ||--{ brands
+brands ||--{ glasses
+suppliers ||--|| addresses
+customers ||--{ customers
+customers ||--{ orders
+employees ||--{ orders
+orders ||--{ details
+glasses ||--{ details
+@enduml
