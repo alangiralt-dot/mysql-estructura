@@ -43,7 +43,6 @@ country : CHAR
 entity "customers" {
 * customer_id : INT
 --
-recomended_by_id : INT
 is_active : BOOLEAN
 name : VARCHAR
 postal_code : VARCHAR
