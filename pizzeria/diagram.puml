@@ -1,0 +1,130 @@
+@startuml
+hide circle
+entity "categories" {
+  * category_id : int
+  --
+  category : varchar
+  ..
+  7
+}
+entity "cities" {
+  * city_id : int
+  --
+  city : varchar
+  + province_id : int
+  ..
+  2
+}
+entity "customers" {
+  * customer_id : int
+  --
+  first_name : varchar
+  last_name : varchar
+  phone : varchar
+  street : varchar
+  address_number : varchar
+  address_floor : varchar
+  door : varchar
+  + city_id : int
+  postal_code : varchar
+  ..
+  3
+}
+entity "dark_kitchens" {
+  * dark_kitchen_id : int
+  --
+  phone : varchar
+  street : varchar
+  address_number : varchar
+  address_floor : varchar
+  door : varchar
+  + city_id : int
+  postal_code : varchar
+  ..
+  4
+}
+entity "deliveries" {
+  * delivery_id : int
+  --
+  delivered_at : datetime
+  + order_id : int
+  + employee_id : int
+  ..
+  12
+}
+entity "details" {
+  + order_id : int
+  + product_id : int
+  --
+  quantity : int
+  sale_unit_price : decimal
+  ..
+  11
+}
+entity "employees" {
+  * employee_id : int
+  --
+  first_name : varchar
+  last_name : varchar
+  national_id : varchar
+  phone : varchar
+  role : enum
+  + dark_kitchen_id : int
+  ..
+  5
+}
+entity "orders" {
+  * order_id : int
+  --
+  ordered_at : datetime
+  + customer_id : int
+  + dark_kitchen_id : int
+  ..
+  6
+}
+entity "products" {
+  * product_id : int
+  --
+  + category_id : int
+  cost_unit_price : decimal
+  name : varchar
+  description : varchar
+  image_path : varchar
+  ..
+  8
+}
+entity "products_tags" {
+  + product_id : int
+  + tag_id : int
+  --
+  ..
+  10
+}
+entity "provinces" {
+  * province_id : int
+  --
+  province : varchar
+  ..
+  1
+}
+entity "tags" {
+  * tag_id : int
+  --
+  tag : varchar
+  ..
+  9
+}
+provinces ||--{ cities
+cities ||--{ dark_kitchens
+cities ||--{ customers
+dark_kitchens ||--{ employees
+dark_kitchens ||--{ orders
+customers ||--{orders
+employees ||--{ deliveries
+orders ||--{ details
+orders ||--|| deliveries
+categories ||--{ products
+products ||--{ details
+products ||--{ products_tags
+tags ||--{ products_tags
+@enduml
