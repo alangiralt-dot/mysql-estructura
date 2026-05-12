@@ -7,12 +7,16 @@ name : VARCHAR
 phone : VARCHAR
 fax : VARCHAR
 nif : CHAR
+..
+1
 }
 entity "brands" {
 * brand_id : INT
 --
 name : VARCHAR
 + supplier_id : INT
+..
+2
 }
 entity "glasses" {
 * glass_id : INT
@@ -27,6 +31,8 @@ right_lens_color : VARCHAR
 cost_unit_price : DECIMAL
 stock : TINYINT
 + brand_id : INT
+..
+3
 }
 entity "addresses" {
 * address_id : INT
@@ -39,6 +45,8 @@ city : VARCHAR
 postal_code : VARCHAR
 country : CHAR
 + supplier_id : INT
+..
+4
 }
 entity "customers" {
 * customer_id : INT
@@ -50,12 +58,16 @@ phone : VARCHAR
 email : VARCHAR
 registered_at : DATE
 + recommended_by_id : INT
+..
+5
 }
 entity "employees" {
 * employee_id : INT
 --
 first_name : VARCHAR
 last_name : VARCHAR
+..
+6
 }
 entity "orders" {
 * order_id : INT
@@ -65,6 +77,8 @@ customer_id : INT
 ordered_at : DATETIME
 + employee_id : INT
 + customer_id : INT
+..
+7
 }
 entity "details" {
 order_id : INT
@@ -74,6 +88,8 @@ quantity : INT
 sale_unit_price : DECIMAL
 + order_id : INT
 + glass_id : INT
+..
+8
 }
 suppliers ||--{ brands
 brands ||--{ glasses
