@@ -16,36 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `addresses`
+-- Table structure for table `suppliers`
 --
 
-DROP TABLE IF EXISTS `addresses`;
+DROP TABLE IF EXISTS `suppliers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `addresses` (
-  `address_id` int(11) NOT NULL AUTO_INCREMENT,
-  `supplier_id` int(11) NOT NULL,
-  `street` varchar(50) NOT NULL,
-  `address_number` varchar(10) NOT NULL,
-  `address_floor` varchar(10) DEFAULT NULL,
-  `door` varchar(10) DEFAULT NULL,
-  `city` varchar(50) NOT NULL,
-  `postal_code` varchar(10) NOT NULL,
-  `country` char(2) NOT NULL,
-  PRIMARY KEY (`address_id`),
-  UNIQUE KEY `supplier_id` (`supplier_id`),
-  CONSTRAINT `fk_addresses_suppliers` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`supplier_id`)
+CREATE TABLE `suppliers` (
+  `supplier_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `fax` varchar(20) DEFAULT NULL,
+  `nif` char(9) NOT NULL,
+  PRIMARY KEY (`supplier_id`),
+  UNIQUE KEY `nif` (`nif`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `addresses`
+-- Dumping data for table `suppliers`
 --
 
-LOCK TABLES `addresses` WRITE;
-/*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
-INSERT INTO `addresses` VALUES (1,1,'Via Cantù','2','1','A','Milan','20123','IT'),(2,2,'Settima Strada','15','PB','1','Padua','35129','IT');
-/*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
+LOCK TABLES `suppliers` WRITE;
+/*!40000 ALTER TABLE `suppliers` DISABLE KEYS */;
+INSERT INTO `suppliers` VALUES (1,'Luxottica Group','932112233','932112234','A12345678'),(2,'Safilo Group','915556677','915556678','B87654321');
+/*!40000 ALTER TABLE `suppliers` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -74,93 +69,6 @@ LOCK TABLES `brands` WRITE;
 /*!40000 ALTER TABLE `brands` DISABLE KEYS */;
 INSERT INTO `brands` VALUES (1,1,'Ray-Ban'),(2,1,'Oakley'),(3,2,'Carrera');
 /*!40000 ALTER TABLE `brands` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `customers`
---
-
-DROP TABLE IF EXISTS `customers`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `customers` (
-  `customer_id` int(11) NOT NULL AUTO_INCREMENT,
-  `recommended_by_id` int(11) DEFAULT NULL,
-  `is_active` tinyint(1) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `postal_code` varchar(10) NOT NULL,
-  `phone` varchar(20) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `registered_at` date NOT NULL,
-  PRIMARY KEY (`customer_id`),
-  UNIQUE KEY `email` (`email`),
-  KEY `fk_customers_customers` (`recommended_by_id`),
-  CONSTRAINT `fk_customers_customers` FOREIGN KEY (`recommended_by_id`) REFERENCES `customers` (`customer_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `customers`
---
-
-LOCK TABLES `customers` WRITE;
-/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
-INSERT INTO `customers` VALUES (1,NULL,1,'Alice Anderson','08001','600111001','alice@corp.com','2023-01-01'),(2,1,1,'Bob Bennett','08002','600222002','bob@corp.com','2023-04-01'),(3,2,1,'Charlie Clark','08003','600333003','charlie@corp.com','2023-05-01'),(4,NULL,1,'David Dawson','28001','600444004','david@logic.net','2023-01-10'),(5,4,1,'Elena Evans','28002','600555005','elena@logic.net','2023-04-10'),(6,1,1,'Frank Foster','08005','600666006','frank@corp.com','2023-04-05'),(7,NULL,1,'Grace Gomez','41001','600777007','grace@web.org','2023-02-01'),(8,NULL,1,'Henry Harris','41002','600888008','henry@web.org','2023-02-15'),(9,NULL,1,'Isabel Irving','50001','600999009','isabel@web.org','2023-03-01'),(10,NULL,0,'Jack Jackson','50002','600101010','jack@web.org','2023-03-10');
-/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `details`
---
-
-DROP TABLE IF EXISTS `details`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `details` (
-  `order_id` int(11) NOT NULL,
-  `glass_id` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL,
-  `sale_unit_price` decimal(8,4) NOT NULL,
-  PRIMARY KEY (`order_id`,`glass_id`),
-  KEY `fk_details_glasses` (`glass_id`),
-  CONSTRAINT `fk_details_glasses` FOREIGN KEY (`glass_id`) REFERENCES `glasses` (`glass_id`),
-  CONSTRAINT `fk_details_orders` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `details`
---
-
-LOCK TABLES `details` WRITE;
-/*!40000 ALTER TABLE `details` DISABLE KEYS */;
-INSERT INTO `details` VALUES (1,1,1,145.0000),(1,2,2,160.0000),(1,5,1,210.0000),(2,3,1,195.0000),(2,4,1,185.0000),(3,1,1,145.0000),(4,2,2,160.0000),(5,4,1,185.0000),(5,5,1,210.0000),(6,1,1,145.0000),(7,2,1,160.0000),(8,3,1,195.0000),(9,4,1,185.0000),(10,5,1,210.0000),(11,1,1,145.0000),(12,2,1,160.0000),(13,3,1,195.0000),(14,4,1,185.0000),(15,5,1,210.0000);
-/*!40000 ALTER TABLE `details` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `employees`
---
-
-DROP TABLE IF EXISTS `employees`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `employees` (
-  `employee_id` int(11) NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(50) NOT NULL,
-  `last_name` varchar(50) NOT NULL,
-  PRIMARY KEY (`employee_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `employees`
---
-
-LOCK TABLES `employees` WRITE;
-/*!40000 ALTER TABLE `employees` DISABLE KEYS */;
-INSERT INTO `employees` VALUES (1,'Thomas','Anderson'),(2,'Sarah','Connor'),(3,'James','Wilson'),(4,'Elena','Rodríguez'),(5,'David','Chen'),(6,'Linda','Hamilton');
-/*!40000 ALTER TABLE `employees` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -199,6 +107,97 @@ INSERT INTO `glasses` VALUES (1,1,'Wayfarer Classic',1.25,1.50,'Acetate','Black'
 UNLOCK TABLES;
 
 --
+-- Table structure for table `addresses`
+--
+
+DROP TABLE IF EXISTS `addresses`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `addresses` (
+  `address_id` int(11) NOT NULL AUTO_INCREMENT,
+  `supplier_id` int(11) NOT NULL,
+  `street` varchar(50) NOT NULL,
+  `address_number` varchar(10) NOT NULL,
+  `address_floor` varchar(10) DEFAULT NULL,
+  `door` varchar(10) DEFAULT NULL,
+  `city` varchar(50) NOT NULL,
+  `postal_code` varchar(10) NOT NULL,
+  `country` char(2) NOT NULL,
+  PRIMARY KEY (`address_id`),
+  UNIQUE KEY `supplier_id` (`supplier_id`),
+  CONSTRAINT `fk_addresses_suppliers` FOREIGN KEY (`supplier_id`) REFERENCES `suppliers` (`supplier_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `addresses`
+--
+
+LOCK TABLES `addresses` WRITE;
+/*!40000 ALTER TABLE `addresses` DISABLE KEYS */;
+INSERT INTO `addresses` VALUES (1,1,'Via Cantù','2','1','A','Milan','20123','IT'),(2,2,'Settima Strada','15','PB','1','Padua','35129','IT');
+/*!40000 ALTER TABLE `addresses` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `customers`
+--
+
+DROP TABLE IF EXISTS `customers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `customers` (
+  `customer_id` int(11) NOT NULL AUTO_INCREMENT,
+  `recommended_by_id` int(11) DEFAULT NULL,
+  `is_active` tinyint(1) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `postal_code` varchar(10) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `registered_at` date NOT NULL,
+  PRIMARY KEY (`customer_id`),
+  UNIQUE KEY `email` (`email`),
+  KEY `fk_customers_customers` (`recommended_by_id`),
+  CONSTRAINT `fk_customers_customers` FOREIGN KEY (`recommended_by_id`) REFERENCES `customers` (`customer_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `customers`
+--
+
+LOCK TABLES `customers` WRITE;
+/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
+INSERT INTO `customers` VALUES (1,NULL,1,'Alice Anderson','08001','600111001','alice@corp.com','2023-01-01'),(2,1,1,'Bob Bennett','08002','600222002','bob@corp.com','2023-04-01'),(3,2,1,'Charlie Clark','08003','600333003','charlie@corp.com','2023-05-01'),(4,NULL,1,'David Dawson','28001','600444004','david@logic.net','2023-01-10'),(5,4,1,'Elena Evans','28002','600555005','elena@logic.net','2023-04-10'),(6,1,1,'Frank Foster','08005','600666006','frank@corp.com','2023-04-05'),(7,NULL,1,'Grace Gomez','41001','600777007','grace@web.org','2023-02-01'),(8,NULL,1,'Henry Harris','41002','600888008','henry@web.org','2023-02-15'),(9,NULL,1,'Isabel Irving','50001','600999009','isabel@web.org','2023-03-01'),(10,NULL,0,'Jack Jackson','50002','600101010','jack@web.org','2023-03-10');
+/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `employees`
+--
+
+DROP TABLE IF EXISTS `employees`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `employees` (
+  `employee_id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`employee_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `employees`
+--
+
+LOCK TABLES `employees` WRITE;
+/*!40000 ALTER TABLE `employees` DISABLE KEYS */;
+INSERT INTO `employees` VALUES (1,'Thomas','Anderson'),(2,'Sarah','Connor'),(3,'James','Wilson'),(4,'Elena','Rodríguez'),(5,'David','Chen'),(6,'Linda','Hamilton');
+/*!40000 ALTER TABLE `employees` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `orders`
 --
 
@@ -229,32 +228,34 @@ INSERT INTO `orders` VALUES (1,2,1,'2023-01-10 10:00:00'),(2,3,1,'2023-09-15 11:
 UNLOCK TABLES;
 
 --
--- Table structure for table `suppliers`
+-- Table structure for table `details`
 --
 
-DROP TABLE IF EXISTS `suppliers`;
+DROP TABLE IF EXISTS `details`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `suppliers` (
-  `supplier_id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) NOT NULL,
-  `phone` varchar(20) NOT NULL,
-  `fax` varchar(20) DEFAULT NULL,
-  `nif` char(9) NOT NULL,
-  PRIMARY KEY (`supplier_id`),
-  UNIQUE KEY `nif` (`nif`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `details` (
+  `order_id` int(11) NOT NULL,
+  `glass_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `sale_unit_price` decimal(8,4) NOT NULL,
+  PRIMARY KEY (`order_id`,`glass_id`),
+  KEY `fk_details_glasses` (`glass_id`),
+  CONSTRAINT `fk_details_glasses` FOREIGN KEY (`glass_id`) REFERENCES `glasses` (`glass_id`),
+  CONSTRAINT `fk_details_orders` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `suppliers`
+-- Dumping data for table `details`
 --
 
-LOCK TABLES `suppliers` WRITE;
-/*!40000 ALTER TABLE `suppliers` DISABLE KEYS */;
-INSERT INTO `suppliers` VALUES (1,'Luxottica Group','932112233','932112234','A12345678'),(2,'Safilo Group','915556677','915556678','B87654321');
-/*!40000 ALTER TABLE `suppliers` ENABLE KEYS */;
+LOCK TABLES `details` WRITE;
+/*!40000 ALTER TABLE `details` DISABLE KEYS */;
+INSERT INTO `details` VALUES (1,1,1,145.0000),(1,2,2,160.0000),(1,5,1,210.0000),(2,3,1,195.0000),(2,4,1,185.0000),(3,1,1,145.0000),(4,2,2,160.0000),(5,4,1,185.0000),(5,5,1,210.0000),(6,1,1,145.0000),(7,2,1,160.0000),(8,3,1,195.0000),(9,4,1,185.0000),(10,5,1,210.0000),(11,1,1,145.0000),(12,2,1,160.0000),(13,3,1,195.0000),(14,4,1,185.0000),(15,5,1,210.0000);
+/*!40000 ALTER TABLE `details` ENABLE KEYS */;
 UNLOCK TABLES;
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
